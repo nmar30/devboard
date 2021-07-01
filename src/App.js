@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect} from 'react-router-dom';
 import Home from './components/Home';
 import Profile from './components/Profile';
@@ -16,7 +18,6 @@ const App = () => {
     try{
       const user = jwtDecode(jwt);
       setUser(user);
-      console.log(user);
     } catch {
       console.log('no token');
     }
@@ -30,13 +31,15 @@ const App = () => {
         console.log()
       }
       await postData();
+      window.location.reload()
     } catch (e) {
       console.log(e)
     }
 }
+
   return (
     <div className="App">
-      <NavBar />
+      <NavBar user={user}/>
       <Switch>
         <Route path ='/' exact component={Home}/>
         <Route path ='/login' render={(props) => (

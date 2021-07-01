@@ -4,7 +4,6 @@ import useForm from './useForm'
 const Login = (props) => {
 
     const { values, handleChange, handleSubmit } = useForm(login);
-    const loginUser = props.loginUser;
     const getToken = props.getToken;
 
     function login(){

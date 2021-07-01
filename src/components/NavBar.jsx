@@ -1,36 +1,32 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React from "react";
+import { Navbar, Nav, Container } from "react-bootstrap";
 
-const NavBar = ({user}) => {
-    const logout = () => {
-        localStorage.removeItem('token')
-        window.location.href = "/login";
-    }
-    console.log(user)
-    return(
-        <nav>
-            <ul>
-                <Link to='/'>
-                    <li>Home</li>
-                </Link>   
-                {!user &&
-                <Link to='/login'>
-                    <li>Login</li>
-                </Link>}
-                {user &&
-                <React.Fragment>
-                <Link to='/profile'>
-                    <li>Profile</li>
-                </Link>
-                <Link to='/login' onClick={logout}>
-                    <li>Logout</li>
-                </Link>
-                </React.Fragment>
-
-                }
-            </ul>
-        </nav>
-    )
-}
+const NavBar = ({ user }) => {
+  const logout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+  console.log(user);
+  return (
+    <Navbar bg="dark" variant="dark">
+      <Navbar.Brand href="/">devBoard</Navbar.Brand>
+      <Nav className="mr-auto">
+        {!user && <Nav.Link href="/login">Login</Nav.Link>}
+        {user && (
+          <React.Fragment>
+            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/profile">Profile</Nav.Link>
+            <Nav.Link onClick={logout}>Logout</Nav.Link>
+          </React.Fragment>
+        )}
+      </Nav>
+      {user && (
+        <Navbar.Collapse className="justify-content-end">
+          <Navbar.Text>Hello {user.first_name}</Navbar.Text>
+        </Navbar.Collapse>
+      )}
+    </Navbar>
+  );
+};
 
 export default NavBar;

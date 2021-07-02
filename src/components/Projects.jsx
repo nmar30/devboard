@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Spinner, Card } from "react-bootstrap";
 import axios from "../axios";
 
-const Projects = () => {
+const Projects = ({ user }) => {
   const [projects, setProjects] = useState(null);
   const [isLoaded, setLoaded] = useState(false);
 

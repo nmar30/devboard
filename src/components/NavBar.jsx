@@ -2,11 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
 
-const NavBar = ({ user }) => {
-  const logout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-  };
+const NavBar = ({ user, logout }) => {
   return (
     <Navbar bg="dark" variant="dark">
       <Navbar.Brand href="/">devBoard</Navbar.Brand>

@@ -15,6 +15,7 @@ import { Container, Row, Col } from "react-bootstrap";
 const App = () => {
   //State
   const [user, setUser] = useState(null);
+  const [isAuthenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
     console.log("Token useEffect Ran");
@@ -23,10 +24,12 @@ const App = () => {
         const jwt = localStorage.getItem("token");
         const user = jwtDecode(jwt);
         setUser(user);
+        setAuthenticated(true);
       } catch {
         console.log("no token");
       }
     }
+    console.log(user);
   }, [user]);
 
   const getToken = async (values) => {
@@ -40,10 +43,16 @@ const App = () => {
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    setAuthenticated(false);
+    window.location.href = "/login";
+  };
+
   return (
     <Container>
       <Row>
-        <NavBar user={user} />
+        <NavBar user={user} logout={logout} />
       </Row>
       <Row>
         <Switch>
@@ -55,12 +64,14 @@ const App = () => {
           <ProtectedRoute
             exact
             path="/profile"
+            isAuthenticated={isAuthenticated}
             user={user}
             component={Profile}
           />
           <ProtectedRoute
             exact
             path="/projects"
+            isAuthenticated={isAuthenticated}
             user={user}
             component={Projects}
           />

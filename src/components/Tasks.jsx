@@ -1,51 +1,43 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Spinner, Card } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
 import axios from "../axios";
 
-const Projects = ({ user }) => {
-  const [projects, setProjects] = useState(null);
-  const [selectedProject, setSelectedProject] = useState();
+const Tasks = ({
+  match: {
+    params: { project_id },
+  },
+}) => {
+  const [tasks, setTasks] = useState(null);
   const [isLoaded, setLoaded] = useState(false);
 
-  const history = useHistory();
-
   useEffect(() => {
-    console.log("Get Projects useEffect");
-    if (!projects) {
-      const getProjects = async () => {
+    console.log("Get Tasks useEffect");
+    if (!tasks) {
+      const getTasks = async () => {
         try {
           const jwt = await JSON.parse(localStorage.getItem("token"));
-          const response = await axios.get(`projects/${user.user_id}`, {
+          const response = await axios.get(`projects/${project_id}/tasks/`, {
             headers: { Authorization: "Bearer " + jwt.access },
           });
-          setProjects(response.data);
+          setTasks(response.data);
           setLoaded(true);
         } catch (e) {
           console.log(e);
         }
       };
-      getProjects();
+      getTasks();
     }
-    console.log(projects);
-  }, [projects]);
-
-  const handleClick = (project_id) => {
-    console.log(project_id);
-    history.push({
-      pathname: `/project?${project_id}/tasks`,
-    });
-  };
-
+    console.log(tasks);
+  }, [tasks]);
   if (isLoaded) {
     return (
       <div>
-        <h1>Projects</h1>
+        <h1>Tasks</h1>
 
         <ul>
-          {projects.map((i) => (
-            <Card style={{ width: "18rem" }} onClick={() => handleClick(i.id)}>
+          {tasks.map((i) => (
+            <Card style={{ width: "18rem" }}>
               <Card.Body>
                 <Card.Title>{i.name}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">
@@ -63,4 +55,4 @@ const Projects = ({ user }) => {
   }
 };
 
-export default Projects;
+export default Tasks;

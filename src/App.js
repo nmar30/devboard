@@ -5,6 +5,7 @@ import Profile from "./components/Profile";
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
 import Projects from "./components/Projects";
+import Tasks from "./components/Tasks";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Unauthorized from "./components/Unauthorized";
 import { useEffect, useState } from "react";
@@ -74,6 +75,14 @@ const App = () => {
             isAuthenticated={isAuthenticated}
             user={user}
             component={Projects}
+          />
+          <ProtectedRoute
+            exact
+            path="/project?:project_id/tasks"
+            isAuthenticated={isAuthenticated}
+            user={user}
+            component={Tasks}
+            id
           />
           <Route exact path="/unauthorized" component={Unauthorized} />
         </Switch>

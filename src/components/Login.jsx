@@ -1,24 +1,49 @@
 import React from "react";
-import useForm from './useForm'
+import useForm from "./useForm";
+import { Form, Button, Row, Col } from "react-bootstrap";
 
 const Login = (props) => {
+  const { values, handleChange, handleSubmit } = useForm(login);
+  const getToken = props.getToken;
 
-    const { values, handleChange, handleSubmit } = useForm(login);
-    const getToken = props.getToken;
+  function login() {
+    getToken(values);
+  }
 
-    function login(){
-        getToken(values);
-    }
-
-    return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input type='text' name='username' placeholder='username' onChange={handleChange} value={values.front} /><br />
-                <input type='password' name='password' placeholder='Password' onChange={handleChange} value={values.back} /><br />
-                <button type='submit' className="btn btn-primary">Login</button>
-            </form>
-        </div>
-    )
-}
+  return (
+    <Row>
+      <Col sm={8}>Welcome Screen Image</Col>
+      <Col sm={4}>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formGroupUsername">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              size="lg"
+              type="text"
+              name="username"
+              placeholder="Enter username"
+              onChange={handleChange}
+              value={values.username}
+            />
+          </Form.Group>
+          <Form.Group controlId="formGroupPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              size="lg"
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              onChange={handleChange}
+              value={values.password}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </Col>
+    </Row>
+  );
+};
 
 export default Login;

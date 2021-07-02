@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Spinner, Card } from "react-bootstrap";
 import axios from "../axios";
 
@@ -10,6 +11,15 @@ const Tasks = ({
 }) => {
   const [tasks, setTasks] = useState(null);
   const [isLoaded, setLoaded] = useState(false);
+
+  const history = useHistory();
+
+  const handleClick = (task_id) => {
+    console.log(task_id);
+    history.push({
+      pathname: `/project?${project_id}/task?${task_id}/notes`,
+    });
+  };
 
   useEffect(() => {
     console.log("Get Tasks useEffect");
@@ -37,13 +47,14 @@ const Tasks = ({
 
         <ul>
           {tasks.map((i) => (
-            <Card style={{ width: "18rem" }}>
+            <Card style={{ width: "18rem" }} onClick={() => handleClick(i.id)}>
               <Card.Body>
                 <Card.Title>{i.name}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">
-                  Project Owner: {i.owner.username}
+                  Task Owner: {i.owner.username}
                 </Card.Subtitle>
-                <Card.Text>{i.description}</Card.Text>
+                <Card.Text>Status: {i.status}</Card.Text>
+                <Card.Text>Due Date: {i.due_date}</Card.Text>
               </Card.Body>
             </Card>
           ))}

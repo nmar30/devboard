@@ -6,6 +6,7 @@ import NavBar from "./components/NavBar";
 import Login from "./components/Login";
 import Projects from "./components/Projects";
 import Tasks from "./components/Tasks";
+import Notes from "./components/TaskNotes";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Unauthorized from "./components/Unauthorized";
 import { useEffect, useState } from "react";
@@ -82,6 +83,14 @@ const App = () => {
             isAuthenticated={isAuthenticated}
             user={user}
             component={Tasks}
+            id
+          />
+          <ProtectedRoute
+            exact
+            path="/project?:project_id/task?:task_id/notes"
+            isAuthenticated={isAuthenticated}
+            user={user}
+            component={Notes}
             id
           />
           <Route exact path="/unauthorized" component={Unauthorized} />

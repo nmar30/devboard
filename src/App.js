@@ -15,11 +15,12 @@ import { Container, Row, Col } from "react-bootstrap";
 const App = () => {
   //State
   const [user, setUser] = useState(null);
+  const [projects, setProjects] = useState(null);
 
   useEffect(() => {
     console.log("Use Effect Ran");
-    const jwt = localStorage.getItem("token");
     try {
+      const jwt = localStorage.getItem("token");
       const user = jwtDecode(jwt);
       setUser(user);
     } catch {
@@ -34,6 +35,23 @@ const App = () => {
         localStorage.setItem("token", JSON.stringify(response.data));
       }
       await postData();
+      window.location.href = "/";
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getProjects = async () => {
+    try {
+      async function getData() {
+        const jwt = JSON.parse(localStorage.getItem("token"));
+        const response = await axios.get(`projects/`, {
+          headers: { Authorization: "Bearer " + jwt.access },
+        });
+        setProjects(response.data);
+        console.log(projects);
+      }
+      getData();
     } catch (e) {
       console.log(e);
     }

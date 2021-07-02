@@ -7,7 +7,6 @@ const NavBar = ({ user }) => {
     localStorage.removeItem("token");
     window.location.href = "/login";
   };
-  console.log(user);
   return (
     <Navbar bg="dark" variant="dark">
       <Navbar.Brand href="/">devBoard</Navbar.Brand>

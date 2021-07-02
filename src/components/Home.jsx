@@ -1,8 +1,7 @@
-const Home = () => {
+import React from "react";
 
-    return(
-        <h1>HomePage</h1>
-    )
-}
+const Home = () => {
+  return <h1>Home</h1>;
+};
 
 export default Home;

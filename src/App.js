@@ -1,14 +1,11 @@
 import React from "react";
-import {
-  BrowserRouter as Switch,
-  Route,
-  Link,
-  Redirect,
-} from "react-router-dom";
+import { Route, Switch, Link, Redirect } from "react-router-dom";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Unauthorized from "./components/Unauthorized";
 import { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 import axios from "./axios";
@@ -19,6 +16,7 @@ const App = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    console.log("Use Effect Ran");
     const jwt = localStorage.getItem("token");
     try {
       const user = jwtDecode(jwt);
@@ -33,11 +31,8 @@ const App = () => {
       async function postData() {
         const response = await axios.post(`auth/login/`, values);
         localStorage.setItem("token", JSON.stringify(response.data));
-        setUser(localStorage.getItem("token"));
-        console.log();
       }
       await postData();
-      window.location.reload();
     } catch (e) {
       console.log(e);
     }
@@ -50,22 +45,18 @@ const App = () => {
       </Row>
       <Row>
         <Switch>
-          <Route path="/" exact component={Home} />
+          <Route exact path="/" component={Home} />
           <Route
             path="/login"
             render={(props) => <Login {...props} getToken={getToken} />}
           />
-          <Route
+          <ProtectedRoute
+            exact
             path="/profile"
-            render={(props) => {
-              console.log(user);
-              if (!user) {
-                return <Redirect to="/login" />;
-              } else {
-                return <Profile {...props} user={user} />;
-              }
-            }}
+            user={user}
+            component={Profile}
           />
+          <Route exact path="/unauthorized" component={Unauthorized} />
         </Switch>
       </Row>
     </Container>

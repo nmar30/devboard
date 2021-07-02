@@ -15,45 +15,28 @@ import { Container, Row, Col } from "react-bootstrap";
 const App = () => {
   //State
   const [user, setUser] = useState(null);
-  const [projects, setProjects] = useState(null);
 
   useEffect(() => {
-    console.log("Use Effect Ran");
-    try {
-      const jwt = localStorage.getItem("token");
-      const user = jwtDecode(jwt);
-      setUser(user);
-    } catch {
-      console.log("no token");
+    console.log("Token useEffect Ran");
+    if (!user) {
+      try {
+        const jwt = localStorage.getItem("token");
+        const user = jwtDecode(jwt);
+        setUser(user);
+      } catch {
+        console.log("no token");
+      }
     }
-  }, []);
+  }, [user]);
 
   const getToken = async (values) => {
     try {
-      async function postData() {
-        const response = await axios.post(`auth/login/`, values);
-        localStorage.setItem("token", JSON.stringify(response.data));
-      }
-      await postData();
+      const response = await axios.post(`auth/login/`, values);
+      localStorage.setItem("token", JSON.stringify(response.data));
+    } catch (e) {
+      console.log(e);
+    } finally {
       window.location.href = "/";
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const getProjects = async () => {
-    try {
-      async function getData() {
-        const jwt = JSON.parse(localStorage.getItem("token"));
-        const response = await axios.get(`projects/`, {
-          headers: { Authorization: "Bearer " + jwt.access },
-        });
-        setProjects(response.data);
-        console.log(projects);
-      }
-      getData();
-    } catch (e) {
-      console.log(e);
     }
   };
 

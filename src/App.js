@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import Profile from "./components/Profile";
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
+import Projects from "./components/Projects";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Unauthorized from "./components/Unauthorized";
 import { useEffect, useState } from "react";
@@ -55,6 +56,12 @@ const App = () => {
             path="/profile"
             user={user}
             component={Profile}
+          />
+          <ProtectedRoute
+            exact
+            path="/projects"
+            user={user}
+            component={Projects}
           />
           <Route exact path="/unauthorized" component={Unauthorized} />
         </Switch>

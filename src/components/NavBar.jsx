@@ -22,6 +22,9 @@ const NavBar = ({ user }) => {
             <Nav.Link as={Link} to="/">
               Home
             </Nav.Link>
+            <Nav.Link as={Link} to="/projects">
+              Projects
+            </Nav.Link>
             <Nav.Link as={Link} to="/profile">
               Profile
             </Nav.Link>

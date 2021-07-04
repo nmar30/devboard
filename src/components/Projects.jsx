@@ -7,7 +7,6 @@ import AddProjectForm from "./Forms/AddProjectForm";
 
 const Projects = ({ user }) => {
   const [projects, setProjects] = useState(null);
-  const [selectedProject, setSelectedProject] = useState();
   const [isLoaded, setLoaded] = useState(false);
 
   const history = useHistory();
@@ -19,7 +18,6 @@ const Projects = ({ user }) => {
         headers: { Authorization: "Bearer " + jwt.access },
       });
       setProjects(response.data);
-      setLoaded(true);
     } catch (e) {
       console.log(e);
     }
@@ -29,6 +27,8 @@ const Projects = ({ user }) => {
     console.log("Get Projects useEffect");
     if (!projects) {
       getProjects();
+    } else {
+      setLoaded(true);
     }
     console.log(projects);
   }, [projects, user.user_id, getProjects]);

@@ -72,7 +72,7 @@ const Projects = ({ user }) => {
           <h1>Projects</h1>
           <Row>
             {projects.map((i, index) => (
-              <Card key={index} style={{ width: "95%", marginBottom: "15px" }}>
+              <Card key={index} style={{ width: "95%", marginBottom: "10px" }}>
                 <Card.Body>
                   <Card.Title onClick={() => handleClick(i.id)}>
                     {i.name}

@@ -43,7 +43,7 @@ const Tasks = ({
       setLoaded(true);
     }
     console.log(tasks);
-  }, [tasks, project_id]);
+  }, [getTasks, tasks]);
 
   const addTask = async (values) => {
     console.log(values);
@@ -79,7 +79,7 @@ const Tasks = ({
           <Row>
             <CardDeck>
               {tasks.map((i, index) => (
-                <Card key={index} style={{ marginBottom: "15px" }}>
+                <Card key={index} style={{ marginBottom: "5px" }}>
                   <Card.Body>
                     <Card.Title onClick={() => handleClick(i.id)}>
                       {i.name}
@@ -109,7 +109,7 @@ const Tasks = ({
           </Row>
         </Col>
         <Col sm={4}>
-          <AddTaskForm addTask={addTask} user={user} />
+          <AddTaskForm addTask={addTask} />
         </Col>
       </Row>
     );

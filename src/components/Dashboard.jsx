@@ -8,7 +8,7 @@ const Dashboard = () => {
   useEffect(() => {
     setLoaded(true);
     console.log(isLoaded);
-  });
+  }, [isLoaded]);
 
   if (isLoaded) {
     return <h1>Dashboard</h1>;

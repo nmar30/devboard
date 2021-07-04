@@ -1,6 +1,6 @@
 import React from "react";
-import { Route, Switch, Link, Redirect } from "react-router-dom";
-import Home from "./components/Home";
+import { Route, Switch, Link, Redirect, useHistory } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
@@ -18,6 +18,8 @@ const App = () => {
   //State
   const [user, setUser] = useState(null);
   const [isAuthenticated, setAuthenticated] = useState(false);
+
+  const history = useHistory();
 
   useEffect(() => {
     console.log("Token useEffect Ran");
@@ -41,8 +43,8 @@ const App = () => {
     } catch (e) {
       console.log(e);
     } finally {
-      window.location.href = "/";
     }
+    window.location.href = "/dashboard";
   };
 
   const logout = () => {
@@ -58,10 +60,16 @@ const App = () => {
       </Row>
       <Row>
         <Switch>
-          <Route exact path="/" component={Home} />
           <Route
             path="/login"
             render={(props) => <Login {...props} getToken={getToken} />}
+          />
+          <ProtectedRoute
+            exact
+            path="/dashboard"
+            isAuthenticated={isAuthenticated}
+            user={user}
+            component={Dashboard}
           />
           <ProtectedRoute
             exact

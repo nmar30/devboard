@@ -10,14 +10,14 @@ import useForm from "../useForm";
 import axios from "../../axios";
 import { useState } from "react";
 
-const AddProjectForm = ({ addProject, user }) => {
+const AddProjectForm = ({ addProject }) => {
   const { values, handleChange, handleSubmit } = useForm(submit);
   const [addMember, setAddMember] = useState();
   const [members, setMembers] = useState([]);
   const [membersId, setMembersId] = useState([]);
 
   function submit() {
-    addProject({ ...values, owner: user.user_id, members: membersId });
+    addProject({ ...values, members: membersId });
   }
 
   const getUserDetails = async (username) => {

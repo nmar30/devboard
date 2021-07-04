@@ -44,9 +44,13 @@ const Projects = ({ user }) => {
     console.log(values);
     const jwt = await JSON.parse(localStorage.getItem("token"));
     await axios
-      .post(`projects/`, values, {
-        headers: { Authorization: "Bearer " + jwt.access },
-      })
+      .post(
+        `projects/`,
+        { ...values, owner: user.user_id },
+        {
+          headers: { Authorization: "Bearer " + jwt.access },
+        }
+      )
       .then((res) => {
         getProjects();
       })
@@ -67,8 +71,8 @@ const Projects = ({ user }) => {
         <Col sm={8}>
           <h1>Projects</h1>
           <Row>
-            {projects.map((i) => (
-              <Card style={{ width: "95%", marginBottom: "15px" }}>
+            {projects.map((i, index) => (
+              <Card key={index} style={{ width: "95%", marginBottom: "15px" }}>
                 <Card.Body>
                   <Card.Title onClick={() => handleClick(i.id)}>
                     {i.name}
@@ -86,7 +90,7 @@ const Projects = ({ user }) => {
           </Row>
         </Col>
         <Col sm={4}>
-          <AddProjectForm addProject={addProject} user={user} />
+          <AddProjectForm addProject={addProject} />
         </Col>
       </Row>
     );

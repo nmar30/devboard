@@ -1,10 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Spinner, Card } from "react-bootstrap";
+import { Spinner, Card, Row, Col, CardDeck, Button } from "react-bootstrap";
 import axios from "../axios";
+import AddTaskForm from "./Forms/AddTaskForm";
 
 const Tasks = ({
+  user,
   match: {
     params: { project_id },
   },
@@ -21,45 +23,95 @@ const Tasks = ({
     });
   };
 
+  const getTasks = async () => {
+    try {
+      const jwt = await JSON.parse(localStorage.getItem("token"));
+      const response = await axios.get(`projects/${project_id}/tasks/`, {
+        headers: { Authorization: "Bearer " + jwt.access },
+      });
+      setTasks(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     console.log("Get Tasks useEffect");
     if (!tasks) {
-      const getTasks = async () => {
-        try {
-          const jwt = await JSON.parse(localStorage.getItem("token"));
-          const response = await axios.get(`projects/${project_id}/tasks/`, {
-            headers: { Authorization: "Bearer " + jwt.access },
-          });
-          setTasks(response.data);
-          setLoaded(true);
-        } catch (e) {
-          console.log(e);
-        }
-      };
       getTasks();
+    } else {
+      setLoaded(true);
     }
     console.log(tasks);
   }, [tasks, project_id]);
+
+  const addTask = async (values) => {
+    console.log(values);
+    console.log(user);
+    const jwt = await JSON.parse(localStorage.getItem("token"));
+    await axios
+      .post(
+        `projects/${project_id}/tasks/`,
+        { ...values, project: project_id, owner: user.user_id },
+        {
+          headers: { Authorization: "Bearer " + jwt.access },
+        }
+      )
+      .then((res) => {
+        getTasks();
+      })
+      .catch((error) => console.log(error.response));
+  };
+
+  const deleteTask = async (taskid) => {
+    const jwt = await JSON.parse(localStorage.getItem("token"));
+    await axios.delete(`projects/${project_id}/tasks/${taskid}/`, {
+      headers: { Authorization: "Bearer " + jwt.access },
+    });
+    getTasks();
+  };
+
   if (isLoaded) {
     return (
-      <div>
-        <h1>Tasks</h1>
+      <Row>
+        <Col sm={8}>
+          <h1>Tasks</h1>
+          <Row>
+            <CardDeck>
+              {tasks.map((i, index) => (
+                <Card key={index} style={{ marginBottom: "15px" }}>
+                  <Card.Body>
+                    <Card.Title onClick={() => handleClick(i.id)}>
+                      {i.name}
+                    </Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      Task Owner: {i.owner.username}
+                    </Card.Subtitle>
+                    <Card.Text className="justify-content-end">
+                      Status: {i.status}
+                    </Card.Text>
+                    <Card.Text className="justify-content-end">
+                      Due Date: {i.due_date}
+                    </Card.Text>
+                    <Button variant="danger" onClick={() => deleteTask(i.id)}>
+                      Delete
+                    </Button>
+                  </Card.Body>
 
-        <ul>
-          {tasks.map((i) => (
-            <Card style={{ width: "18rem" }} onClick={() => handleClick(i.id)}>
-              <Card.Body>
-                <Card.Title>{i.name}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
-                  Task Owner: {i.owner.username}
-                </Card.Subtitle>
-                <Card.Text>Status: {i.status}</Card.Text>
-                <Card.Text>Due Date: {i.due_date}</Card.Text>
-              </Card.Body>
-            </Card>
-          ))}
-        </ul>
-      </div>
+                  <Card.Footer>
+                    <small className="text-muted">
+                      Last updated 3 mins ago
+                    </small>
+                  </Card.Footer>
+                </Card>
+              ))}
+            </CardDeck>
+          </Row>
+        </Col>
+        <Col sm={4}>
+          <AddTaskForm addTask={addTask} user={user} />
+        </Col>
+      </Row>
     );
   } else {
     return <Spinner animation="border" />;

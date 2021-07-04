@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Spinner, Card, Row, Col } from "react-bootstrap";
+import { Spinner, Card, Row, Col, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import axios from "../axios";
 import AddProjectForm from "./Forms/AddProjectForm";
@@ -53,7 +53,13 @@ const Projects = ({ user }) => {
       .catch((error) => console.log(error.response));
   };
 
-  const deleteProject = async (values) => {};
+  const deleteProject = async (projectid) => {
+    const jwt = await JSON.parse(localStorage.getItem("token"));
+    await axios.delete(`projects/${projectid}/`, {
+      headers: { Authorization: "Bearer " + jwt.access },
+    });
+    getProjects();
+  };
 
   if (isLoaded) {
     return (
@@ -62,16 +68,18 @@ const Projects = ({ user }) => {
           <h1>Projects</h1>
           <Row>
             {projects.map((i) => (
-              <Card
-                style={{ width: "95%", marginBottom: "15px" }}
-                onClick={() => handleClick(i.id)}
-              >
+              <Card style={{ width: "95%", marginBottom: "15px" }}>
                 <Card.Body>
-                  <Card.Title>{i.name}</Card.Title>
+                  <Card.Title onClick={() => handleClick(i.id)}>
+                    {i.name}
+                  </Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">
                     Project Owner: {i.owner.username}
                   </Card.Subtitle>
                   <Card.Text>{i.description}</Card.Text>
+                  <Button variant="danger" onClick={() => deleteProject(i.id)}>
+                    Delete
+                  </Button>
                 </Card.Body>
               </Card>
             ))}

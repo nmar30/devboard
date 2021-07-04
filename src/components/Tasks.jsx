@@ -39,7 +39,7 @@ const Tasks = ({
       getTasks();
     }
     console.log(tasks);
-  }, [tasks]);
+  }, [tasks, project_id]);
   if (isLoaded) {
     return (
       <div>

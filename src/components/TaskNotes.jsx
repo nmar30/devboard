@@ -33,7 +33,7 @@ const Notes = ({
       getNotes();
     }
     console.log(notes);
-  }, [notes]);
+  }, [project_id, task_id, notes]);
   if (isLoaded) {
     return (
       <div>

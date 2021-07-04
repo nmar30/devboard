@@ -1,28 +1,51 @@
-import React, { useReducer } from "react";
-import { useState } from "react";
-import { Form, Button, InputGroup, FormControl } from "react-bootstrap";
+import React from "react";
+import {
+  Form,
+  Button,
+  InputGroup,
+  FormControl,
+  ListGroup,
+} from "react-bootstrap";
 import useForm from "../useForm";
 import axios from "../../axios";
+import { useState } from "react";
 
 const AddProjectForm = ({ addProject, user }) => {
-  const { values, handleChange, handleSubmit } = useForm(login);
+  const { values, handleChange, handleSubmit } = useForm(submit);
+  const [addMember, setAddMember] = useState();
+  const [members, setMembers] = useState([]);
+  const [membersId, setMembersId] = useState([]);
 
-  function login() {
-    addProject({ ...values, owner: user.user_id, members: [user.user_id] });
+  function submit() {
+    addProject({ ...values, owner: user.user_id, members: membersId });
   }
 
   const getUserDetails = async (username) => {
     const jwt = await JSON.parse(localStorage.getItem("token"));
-    await axios
+    const response = await axios
       .get(`users/`, {
         params: { username: username },
         headers: { Authorization: "Bearer " + jwt.access },
       })
       .then((res) => {
-        user = res.data;
-        console.log(user);
+        return res.data;
       })
       .catch((error) => console.log(error.response));
+    return await response;
+  };
+
+  const handleAddMember = async (username) => {
+    const memberjson = await getUserDetails(username);
+    setMembers([...members, memberjson]);
+    setMembersId([...membersId, memberjson.id]);
+  };
+
+  const handleRemoveMember = () => {
+    if (members.length > 0) {
+      const lastIndex = members.length - 1;
+      setMembers(members.filter((member, index) => index !== lastIndex));
+      setMembersId(membersId.filter((memberId, index) => index !== lastIndex));
+    }
   };
 
   return (
@@ -39,7 +62,7 @@ const AddProjectForm = ({ addProject, user }) => {
           value={values.name}
         />
       </Form.Group>
-      <Form.Group className="mb-4" controlId="formGroupDescription">
+      <Form.Group className="mb-1" controlId="formGroupDescription">
         <Form.Label>Description</Form.Label>
         <Form.Control
           as="textarea"
@@ -49,19 +72,29 @@ const AddProjectForm = ({ addProject, user }) => {
           value={values.description}
         />
       </Form.Group>
-
-      <InputGroup className="mb-1">
+      <Form.Label>Members</Form.Label>
+      <ListGroup className="mb-2">
+        {members &&
+          members.map((item, index) => (
+            <ListGroup.Item key={index} action onClick={handleRemoveMember}>
+              {item.username}
+            </ListGroup.Item>
+          ))}
+      </ListGroup>
+      <InputGroup className="mb-3">
         <FormControl
           placeholder="Enter username"
           aria-label="Enter username"
           aria-describedby="basic-addon2"
+          value={addMember}
+          onChange={(e) => setAddMember(e.target.value)}
         />
         <Button
           variant="dark"
           id="button-addon2"
-          onClick={() => getUserDetails("admin")}
+          onClick={() => handleAddMember(addMember)}
         >
-          Add
+          Add Member
         </Button>
       </InputGroup>
       <Button variant="primary" type="submit">

@@ -1,7 +1,16 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Spinner, Card, Row, Col, CardDeck, Button } from "react-bootstrap";
+import {
+  Spinner,
+  Card,
+  Row,
+  Col,
+  CardDeck,
+  Button,
+  DropdownButton,
+  Dropdown,
+} from "react-bootstrap";
 import axios from "../axios";
 import AddTaskForm from "./Forms/AddTaskForm";
 
@@ -71,6 +80,22 @@ const Tasks = ({
     getTasks();
   };
 
+  const updateTaskStatus = async (taskid, status) => {
+    const jwt = await JSON.parse(localStorage.getItem("token"));
+    axios
+      .patch(
+        `projects/${project_id}/tasks/${taskid}/`,
+        { status: status },
+        {
+          headers: { Authorization: "Bearer " + jwt.access },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        getTasks();
+      });
+  };
+
   if (isLoaded) {
     return (
       <Row>
@@ -80,27 +105,63 @@ const Tasks = ({
             <CardDeck>
               {tasks.map((i, index) => (
                 <Card key={index} style={{ marginBottom: "5px" }}>
+                  <Card.Header>
+                    <Row>
+                      <Col sm={8}>Status: {i.status}</Col>
+                      <Col sm={4}>
+                        <DropdownButton
+                          id="dropdown-basic-button"
+                          title="Update Status"
+                          size="sm"
+                        >
+                          <Dropdown.Item
+                            onClick={() =>
+                              updateTaskStatus(i.id, "Not Started")
+                            }
+                          >
+                            Not Started
+                          </Dropdown.Item>
+                          <Dropdown.Item
+                            onClick={() =>
+                              updateTaskStatus(i.id, "In Progress")
+                            }
+                          >
+                            In Progress
+                          </Dropdown.Item>
+                          <Dropdown.Item
+                            onClick={() => updateTaskStatus(i.id, "On Hold")}
+                          >
+                            On Hold
+                          </Dropdown.Item>
+                          <Dropdown.Item
+                            onClick={() => updateTaskStatus(i.id, "Completed")}
+                          >
+                            Completed
+                          </Dropdown.Item>
+                        </DropdownButton>
+                      </Col>
+                    </Row>
+                  </Card.Header>
                   <Card.Body>
                     <Card.Title onClick={() => handleClick(i.id)}>
                       {i.name}
                     </Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      Task Owner: {i.owner.username}
-                    </Card.Subtitle>
-                    <Card.Text className="justify-content-end">
-                      Status: {i.status}
-                    </Card.Text>
+                    <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
                     <Card.Text className="justify-content-end">
                       Due Date: {i.due_date}
                     </Card.Text>
-                    <Button variant="danger" onClick={() => deleteTask(i.id)}>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => deleteTask(i.id)}
+                    >
                       Delete
                     </Button>
                   </Card.Body>
 
                   <Card.Footer>
                     <small className="text-muted">
-                      Last updated 3 mins ago
+                      Task Owner: {i.owner.username}
                     </small>
                   </Card.Footer>
                 </Card>

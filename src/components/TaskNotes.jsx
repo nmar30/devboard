@@ -89,7 +89,11 @@ const TaskNotes = ({
                       Delete
                     </Button>
                   </Card.Body>
-                  <Card.Footer>Submitted By: {i.owner.username}</Card.Footer>
+                  <Card.Footer>
+                    <small className="text-muted">
+                      Submitted By: {i.owner.username}
+                    </small>
+                  </Card.Footer>
                 </Card>
               ))}
             </CardDeck>

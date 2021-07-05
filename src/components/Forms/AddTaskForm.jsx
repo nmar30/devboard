@@ -42,7 +42,7 @@ const AddTaskForm = ({ addTask }) => {
           <option>Not Started</option>
           <option>In Progress</option>
           <option>On Hold</option>
-          <option>Complete</option>
+          <option>Completed</option>
         </Form.Control>
       </Form.Group>
       <Form.Group className="mb-1" controlId="formGroupName">

@@ -1,6 +1,14 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Spinner, Card, Row, Col, Button } from "react-bootstrap";
+import {
+  Spinner,
+  Card,
+  Row,
+  Col,
+  Button,
+  CardDeck,
+  ListGroup,
+} from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import axios from "../axios";
 import AddProjectForm from "./Forms/AddProjectForm";
@@ -70,24 +78,46 @@ const Projects = ({ user }) => {
       <Row>
         <Col sm={8}>
           <h1>Projects</h1>
-          <Row>
+          <CardDeck>
             {projects.map((i, index) => (
-              <Card key={index} style={{ width: "95%", marginBottom: "10px" }}>
+              <Card key={index} style={{ marginBottom: "10px" }}>
+                <Card.Header as="h5" onClick={() => handleClick(i.id)}>
+                  {i.name}
+                </Card.Header>
                 <Card.Body>
-                  <Card.Title onClick={() => handleClick(i.id)}>
-                    {i.name}
-                  </Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Project Owner: {i.owner.username}
-                  </Card.Subtitle>
-                  <Card.Text>{i.description}</Card.Text>
-                  <Button variant="danger" onClick={() => deleteProject(i.id)}>
-                    Delete
-                  </Button>
+                  <Row>
+                    <Col sm={8}>
+                      <Card.Text>{i.description}</Card.Text>
+                    </Col>
+                    <Col sm={4}>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Team:
+                      </Card.Subtitle>
+                      <ListGroup>
+                        {i.members.map((m, mi) => (
+                          <ListGroup.Item key={mi}>{m.username}</ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    </Col>
+                  </Row>
                 </Card.Body>
+                <Card.Footer>
+                  <Row>
+                    <Col sm={8}>Project Owner: {i.owner.username}</Col>
+                    <Col sm={4}>
+                      <Button
+                        variant="danger"
+                        onClick={() => deleteProject(i.id)}
+                        size="sm"
+                      >
+                        Delete Project
+                      </Button>
+                    </Col>
+                  </Row>
+                </Card.Footer>
               </Card>
             ))}
-          </Row>
+          </CardDeck>
         </Col>
         <Col sm={4}>
           <AddProjectForm addProject={addProject} />

@@ -150,19 +150,25 @@ const Tasks = ({
                     <Card.Text className="justify-content-end">
                       Due Date: {i.due_date}
                     </Card.Text>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => deleteTask(i.id)}
-                    >
-                      Delete
-                    </Button>
                   </Card.Body>
 
                   <Card.Footer>
-                    <small className="text-muted">
-                      Task Owner: {i.owner.username}
-                    </small>
+                    <Row>
+                      <Col sm={8}>
+                        <small className="text-muted">
+                          Task Owner: {i.owner.username}
+                        </small>
+                      </Col>
+                      <Col sm={4}>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => deleteTask(i.id)}
+                        >
+                          Delete
+                        </Button>
+                      </Col>
+                    </Row>
                   </Card.Footer>
                 </Card>
               ))}

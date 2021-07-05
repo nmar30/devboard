@@ -86,6 +86,9 @@ const Projects = ({ user }) => {
                 </Card.Header>
                 <Card.Body>
                   <Row>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      Project Owner: {i.owner.username}
+                    </Card.Subtitle>
                     <Col sm={8}>
                       <Card.Text>{i.description}</Card.Text>
                     </Col>
@@ -103,8 +106,8 @@ const Projects = ({ user }) => {
                 </Card.Body>
                 <Card.Footer>
                   <Row>
-                    <Col sm={8}>Project Owner: {i.owner.username}</Col>
-                    <Col sm={4}>
+                    <Col sm={10}></Col>
+                    <Col sm={2}>
                       <Button
                         variant="danger"
                         onClick={() => deleteProject(i.id)}

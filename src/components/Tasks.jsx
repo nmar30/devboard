@@ -107,12 +107,19 @@ const Tasks = ({
                 <Card key={index} style={{ marginBottom: "5px" }}>
                   <Card.Header>
                     <Row>
-                      <Col sm={8}>Status: {i.status}</Col>
-                      <Col sm={4}>
+                      <Col sm={10}>
+                        <Card.Title onClick={() => handleClick(i.id)}>
+                          {i.name}
+                        </Card.Title>
+                      </Col>
+                      <Col sm={2}>
                         <DropdownButton
-                          id="dropdown-basic-button"
-                          title="Update Status"
+                          id="dropdown-button-dark-example2"
+                          variant="secondary"
+                          menuVariant="dark"
+                          title={i.status}
                           size="sm"
+                          className="mt-2"
                         >
                           <Dropdown.Item
                             onClick={() =>
@@ -143,29 +150,30 @@ const Tasks = ({
                     </Row>
                   </Card.Header>
                   <Card.Body>
-                    <Card.Title onClick={() => handleClick(i.id)}>
-                      {i.name}
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
-                    <Card.Text className="justify-content-end">
-                      Due Date: {i.due_date}
-                    </Card.Text>
+                    <Row>
+                      <Col sm={8}>
+                        <Card.Subtitle className="mb-2 text-muted">
+                          Task Owner: {i.owner.username}
+                        </Card.Subtitle>
+                        <Card.Text>{i.description}</Card.Text>
+                      </Col>
+                      <Col sm={4}>
+                        <Card.Text>Start Date: {i.start_date}</Card.Text>
+                        <Card.Text>Due Date: {i.due_date}</Card.Text>
+                      </Col>
+                    </Row>
                   </Card.Body>
 
                   <Card.Footer>
                     <Row>
-                      <Col sm={8}>
-                        <small className="text-muted">
-                          Task Owner: {i.owner.username}
-                        </small>
-                      </Col>
-                      <Col sm={4}>
+                      <Col sm={10}></Col>
+                      <Col sm={2}>
                         <Button
                           variant="danger"
                           size="sm"
                           onClick={() => deleteTask(i.id)}
                         >
-                          Delete
+                          Delete Task
                         </Button>
                       </Col>
                     </Row>

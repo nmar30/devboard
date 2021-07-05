@@ -30,6 +30,16 @@ const AddTaskForm = ({ addTask }) => {
           value={values.name}
         />
       </Form.Group>
+      <Form.Group className="mb-1" controlId="formGroupDescription">
+        <Form.Label>Description</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={2}
+          name="description"
+          onChange={handleChange}
+          value={values.description}
+        />
+      </Form.Group>
       <Form.Group className="mb-1" controlId="exampleForm.ControlSelect1">
         <Form.Label>Status</Form.Label>
         <Form.Control
@@ -44,6 +54,16 @@ const AddTaskForm = ({ addTask }) => {
           <option>On Hold</option>
           <option>Completed</option>
         </Form.Control>
+      </Form.Group>
+      <Form.Group className="mb-1" controlId="formGroupName">
+        <Form.Label>Start Date</Form.Label>
+        <Form.Control
+          type="date"
+          name="start_date"
+          placeholder=""
+          onChange={handleChange}
+          value={values.start_date}
+        />
       </Form.Group>
       <Form.Group className="mb-1" controlId="formGroupName">
         <Form.Label>Due Date</Form.Label>

@@ -35,7 +35,7 @@ const Dashboard = ({ user }) => {
   };
 
   useEffect(() => {
-    if (!taskList) {
+    if (!taskList || !projectList) {
       getUserTasks();
       getUserProjects();
     } else {

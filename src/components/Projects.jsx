@@ -12,6 +12,7 @@ import {
 import { useHistory } from "react-router-dom";
 import axios from "../axios";
 import AddProjectForm from "./Forms/AddProjectForm";
+import ProjectTasksStatus from "./Charts/ProjectTasksStatus";
 
 const Projects = ({ user }) => {
   const [projects, setProjects] = useState(null);
@@ -86,12 +87,13 @@ const Projects = ({ user }) => {
                 </Card.Header>
                 <Card.Body>
                   <Row>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      Project Owner: {i.owner.username}
-                    </Card.Subtitle>
-                    <Col sm={8}>
+                    <Col sm={4}>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Project Owner: {i.owner.username}
+                      </Card.Subtitle>
                       <Card.Text>{i.description}</Card.Text>
                     </Col>
+
                     <Col sm={4}>
                       <Card.Subtitle className="mb-2 text-muted">
                         Team:
@@ -101,6 +103,9 @@ const Projects = ({ user }) => {
                           <ListGroup.Item key={mi}>{m.username}</ListGroup.Item>
                         ))}
                       </ListGroup>
+                    </Col>
+                    <Col sm={4}>
+                      <ProjectTasksStatus project_id={i.id} />
                     </Col>
                   </Row>
                 </Card.Body>

@@ -1,14 +1,27 @@
 import React from "react";
+import { useHistory } from "react-router";
 import useForm from "./useForm";
 import { Form, Button, Row, Col } from "react-bootstrap";
+import axios from "../axios";
 
-const Login = (props) => {
+const Login = ({ setAuthenticated }) => {
   const { values, handleChange, handleSubmit } = useForm(login);
-  const getToken = props.getToken;
+
+  const history = useHistory();
 
   function login() {
     getToken(values);
   }
+
+  const getToken = async (values) => {
+    await axios
+      .post(`auth/login/`, values)
+      .then((response) =>
+        localStorage.setItem("token", JSON.stringify(response.data))
+      )
+      .finally(() => (window.location.href = "/dashboard"))
+      .catch((error) => console.log(error));
+  };
 
   return (
     <Row>

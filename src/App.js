@@ -9,6 +9,7 @@ import Tasks from "./components/Tasks";
 import Notes from "./components/TaskNotes";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Unauthorized from "./components/Unauthorized";
+import Register from "./components/Register";
 import { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 import axios from "./axios";
@@ -17,9 +18,7 @@ import { Container, Row, Col } from "react-bootstrap";
 const App = () => {
   //State
   const [user, setUser] = useState(null);
-  const [isAuthenticated, setAuthenticated] = useState(false);
-
-  const history = useHistory();
+  const [isAuthenticated, setAuthenticated] = useState(null);
 
   useEffect(() => {
     console.log("Token useEffect Ran");
@@ -30,22 +29,12 @@ const App = () => {
         setUser(user);
         setAuthenticated(true);
       } catch {
+        setAuthenticated(false);
         console.log("no token");
       }
     }
     console.log(user);
   }, [user]);
-
-  const getToken = async (values) => {
-    try {
-      const response = await axios.post(`auth/login/`, values);
-      localStorage.setItem("token", JSON.stringify(response.data));
-    } catch (e) {
-      console.log(e);
-    } finally {
-    }
-    window.location.href = "/dashboard";
-  };
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -60,10 +49,8 @@ const App = () => {
       </Row>
       <Row>
         <Switch>
-          <Route
-            path="/login"
-            render={(props) => <Login {...props} getToken={getToken} />}
-          />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
           <ProtectedRoute
             exact
             path="/dashboard"

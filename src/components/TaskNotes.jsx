@@ -80,8 +80,8 @@ const TaskNotes = ({
                     <Card.Title>{i.description}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
                     <Card.Text> {i.resources}</Card.Text>
-                    <Card.Text>Start Time: {i.start_time}</Card.Text>
-                    <Card.Text>End Time: {i.end_time}</Card.Text>
+                    <Card.Text>Date Worked: {i.date_worked}</Card.Text>
+                    <Card.Text>Time Worked: {i.time_worked}</Card.Text>
                     <Button
                       variant="danger"
                       onClick={() => deleteTaskNotes(i.id)}

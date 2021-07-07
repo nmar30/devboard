@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import {
   Form,
   Button,
@@ -8,7 +9,7 @@ import {
 } from "react-bootstrap";
 import useForm from "../useForm";
 import axios from "../../axios";
-import { useState } from "react";
+import Timer from "../Timer/Timer";
 
 const AddTaskNoteForm = ({ addTaskNote }) => {
   const { values, handleChange, handleSubmit } = useForm(submit);
@@ -40,26 +41,34 @@ const AddTaskNoteForm = ({ addTaskNote }) => {
           value={values.resources}
         />
       </Form.Group>
-      <Form.Group className="mb-1" controlId="formGroupName">
-        <Form.Label>Start Date/Time</Form.Label>
+      <InputGroup className="mb-1">
+        <InputGroup.Prepend>
+          <InputGroup.Text>Date Worked:</InputGroup.Text>
+        </InputGroup.Prepend>
         <Form.Control
-          type="datetime-local"
-          name="start_time"
-          placeholder=""
+          type="date"
+          name="date_worked"
+          placeholder="Enter Date"
           onChange={handleChange}
-          value={values.start_time}
+          value={values.date_worked}
         />
-      </Form.Group>
-      <Form.Group className="mb-1" controlId="formGroupName">
-        <Form.Label>End Date/Time</Form.Label>
-        <Form.Control
-          type="datetime-local"
-          name="end_time"
-          placeholder=""
+      </InputGroup>
+      <InputGroup className="mb-1">
+        <InputGroup.Prepend>
+          <InputGroup.Text>Time Worked:</InputGroup.Text>
+        </InputGroup.Prepend>
+        <FormControl
+          placeholder="Enter Time"
+          aria-label="Enter Time"
+          aria-describedby="basic-addon2"
           onChange={handleChange}
-          value={values.end_time}
+          value={values.time_worked}
         />
-      </Form.Group>
+        <InputGroup.Append>
+          <Button variant="outline-secondary">Start</Button>
+          <Button variant="outline-secondary">Reset</Button>
+        </InputGroup.Append>
+      </InputGroup>
       <Button variant="primary" type="submit">
         Submit
       </Button>

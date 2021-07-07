@@ -9,7 +9,6 @@ import {
 } from "react-bootstrap";
 import useForm from "../useForm";
 import axios from "../../axios";
-import Timer from "../Timer/Timer";
 
 const AddTaskNoteForm = ({ addTaskNote }) => {
   const { values, handleChange, handleSubmit } = useForm(submit);
@@ -103,9 +102,9 @@ const AddTaskNoteForm = ({ addTaskNote }) => {
         </InputGroup.Prepend>
         <FormControl
           type="number"
-          placeholder="Enter Time"
+          placeholder="Minutes"
           name="time_worked"
-          aria-label="Enter Time"
+          aria-label="Minutes"
           aria-describedby="basic-addon2"
           onChange={handleChange}
           value={values.time_worked}

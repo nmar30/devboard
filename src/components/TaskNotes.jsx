@@ -76,12 +76,17 @@ const TaskNotes = ({
             <CardDeck>
               {notes.map((i, index) => (
                 <Card key={index} style={{ marginBottom: "5px" }}>
+                  <Card.Header>
+                    <Row>
+                      <Col sm={9}>Date Worked: {i.date_worked}</Col>
+                      <Col sm={3}>Time Worked: {i.time_worked} Min</Col>
+                    </Row>
+                  </Card.Header>
                   <Card.Body>
-                    <Card.Title>{i.description}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
+                    <Card.Subtitle>Description</Card.Subtitle>
+                    <Card.Text>{i.description}</Card.Text>
+                    <Card.Subtitle>Resources:</Card.Subtitle>
                     <Card.Text> {i.resources}</Card.Text>
-                    <Card.Text>Date Worked: {i.date_worked}</Card.Text>
-                    <Card.Text>Time Worked: {i.time_worked}</Card.Text>
                     <Button
                       variant="danger"
                       onClick={() => deleteTaskNotes(i.id)}

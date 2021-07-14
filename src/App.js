@@ -48,7 +48,12 @@ const App = () => {
       </Row>
       <Row>
         <Switch>
-          <Route path="/login" component={Login} />
+          <Route
+            path="/login"
+            children={
+              <Login setUser={setUser} setAuthenticated={setAuthenticated} />
+            }
+          />
           <Route path="/register" component={Register} />
           <ProtectedRoute
             exact

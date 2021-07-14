@@ -2,9 +2,13 @@ import React from "react";
 import useForm from "./useForm";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "../axios";
+import jwtDecode from "jwt-decode";
+import { useHistory } from "react-router-dom";
 
-const Login = ({ setAuthenticated }) => {
+const Login = ({ setUser, setAuthenticated }) => {
   const { values, handleChange, handleSubmit } = useForm(login);
+
+  const history = useHistory();
 
   function login() {
     getToken(values);
@@ -16,7 +20,13 @@ const Login = ({ setAuthenticated }) => {
       .then((response) =>
         localStorage.setItem("token", JSON.stringify(response.data))
       )
-      .finally(() => (window.location.href = "/dashboard"))
+      .then(() => {
+        const jwt = localStorage.getItem("token");
+        const user = jwtDecode(jwt);
+        setUser(user);
+        setAuthenticated(true);
+      })
+      .finally(() => history.push("/dashboard"))
       .catch((error) => console.log(error));
   };
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { useCallback } from "react";
 import { useEffect, useState } from "react";
 import { Spinner, Card, Row, Col, CardDeck, Button } from "react-bootstrap";
 import axios from "../axios";
@@ -13,7 +14,7 @@ const TaskNotes = ({
   const [notes, setNotes] = useState(null);
   const [isLoaded, setLoaded] = useState(false);
 
-  const getTaskNotes = async () => {
+  const getTaskNotes = useCallback(async () => {
     try {
       const jwt = await JSON.parse(localStorage.getItem("token"));
       const response = await axios.get(
@@ -26,7 +27,7 @@ const TaskNotes = ({
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [project_id, task_id]);
 
   useEffect(() => {
     console.log("Get Notes useEffect");

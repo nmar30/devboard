@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import axios from "../axios";
 import AddProjectForm from "./Forms/AddProjectForm";
 import ProjectTasksStatus from "./Charts/ProjectTasksStatus";
+import { useCallback } from "react";
 
 const Projects = ({ user }) => {
   const [projects, setProjects] = useState(null);
@@ -20,7 +21,7 @@ const Projects = ({ user }) => {
 
   const history = useHistory();
 
-  const getProjects = async () => {
+  const getProjects = useCallback(async () => {
     try {
       const jwt = await JSON.parse(localStorage.getItem("token"));
       const response = await axios.get(`projects/?user=${user.user_id}`, {
@@ -30,7 +31,7 @@ const Projects = ({ user }) => {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [user.user_id]);
 
   useEffect(() => {
     console.log("Get Projects useEffect");

@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Spinner, Row, Col, ListGroup, Badge } from "react-bootstrap";
+import { Spinner, Row, Col, ListGroup } from "react-bootstrap";
 import axios from "../axios";
 
 const Dashboard = ({ user }) => {
@@ -9,32 +9,35 @@ const Dashboard = ({ user }) => {
   const [projectList, setProjectList] = useState(null);
   const [isLoaded, setLoaded] = useState(false);
 
-  const getUserTasks = async () => {
-    try {
-      const jwt = await JSON.parse(localStorage.getItem("token"));
-      const response = await axios.get(`data/tasks/?user=${user.user_id}`, {
-        headers: { Authorization: "Bearer " + jwt.access },
-      });
-      setTaskList(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const getUserProjects = async () => {
-    try {
-      const jwt = await JSON.parse(localStorage.getItem("token"));
-      const response = await axios.get(`data/projects/?user=${user.user_id}`, {
-        headers: { Authorization: "Bearer " + jwt.access },
-      });
-      setProjectList(response.data);
-      console.log(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   useEffect(() => {
+    const getUserTasks = async () => {
+      try {
+        const jwt = await JSON.parse(localStorage.getItem("token"));
+        const response = await axios.get(`data/tasks/?user=${user.user_id}`, {
+          headers: { Authorization: "Bearer " + jwt.access },
+        });
+        setTaskList(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    const getUserProjects = async () => {
+      try {
+        const jwt = await JSON.parse(localStorage.getItem("token"));
+        const response = await axios.get(
+          `data/projects/?user=${user.user_id}`,
+          {
+            headers: { Authorization: "Bearer " + jwt.access },
+          }
+        );
+        setProjectList(response.data);
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
     if (!taskList || !projectList) {
       getUserTasks();
       getUserProjects();
@@ -42,7 +45,7 @@ const Dashboard = ({ user }) => {
       setLoaded(true);
     }
     console.log(isLoaded);
-  }, [isLoaded, getUserTasks, taskList, getUserProjects, projectList]);
+  }, [isLoaded, taskList, projectList, user.user_id]);
 
   if (isLoaded) {
     return (

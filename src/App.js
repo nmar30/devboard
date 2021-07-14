@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, Link, Redirect, useHistory } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
 import NavBar from "./components/NavBar";
@@ -12,8 +12,7 @@ import Unauthorized from "./components/Unauthorized";
 import Register from "./components/Register";
 import { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
-import axios from "./axios";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 
 const App = () => {
   //State

@@ -1,13 +1,10 @@
 import React from "react";
-import { useHistory } from "react-router";
 import useForm from "./useForm";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "../axios";
 
 const Login = ({ setAuthenticated }) => {
   const { values, handleChange, handleSubmit } = useForm(login);
-
-  const history = useHistory();
 
   function login() {
     getToken(values);

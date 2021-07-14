@@ -1,14 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import {
-  Form,
-  Button,
-  InputGroup,
-  FormControl,
-  ListGroup,
-} from "react-bootstrap";
+import { Form, Button, InputGroup, FormControl } from "react-bootstrap";
 import useForm from "../useForm";
-import axios from "../../axios";
 
 const AddTaskNoteForm = ({ addTaskNote }) => {
   const { values, handleChange, handleSubmit } = useForm(submit);
@@ -46,7 +39,7 @@ const AddTaskNoteForm = ({ addTaskNote }) => {
     }
 
     return () => clearInterval(intervalId);
-  }, [isActive, counter]);
+  }, [isActive, counter, values]);
 
   function resetTimer() {
     setIsActive(false);

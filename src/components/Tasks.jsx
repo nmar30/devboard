@@ -13,6 +13,7 @@ import {
 } from "react-bootstrap";
 import axios from "../axios";
 import AddTaskForm from "./Forms/AddTaskForm";
+import { useCallback } from "react";
 
 const Tasks = ({
   user,
@@ -32,7 +33,7 @@ const Tasks = ({
     });
   };
 
-  const getTasks = async () => {
+  const getTasks = useCallback(async () => {
     try {
       const jwt = await JSON.parse(localStorage.getItem("token"));
       const response = await axios.get(`projects/${project_id}/tasks/`, {
@@ -42,7 +43,7 @@ const Tasks = ({
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [project_id]);
 
   useEffect(() => {
     console.log("Get Tasks useEffect");

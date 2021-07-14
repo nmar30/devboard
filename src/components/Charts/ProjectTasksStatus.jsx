@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import { useState, useEffect } from "react";
 import { Pie } from "react-chartjs-2";
-import { Spinner } from "react-bootstrap";
 import axios from "../../axios";
 
 const ProjectTasksStatus = ({ project_id }) => {
@@ -37,7 +36,7 @@ const ProjectTasksStatus = ({ project_id }) => {
         });
     };
     getTasks();
-  }, []);
+  }, [project_id]);
 
   const data = {
     labels: ["Not Started", "In Progress", "On Hold", "Completed"],
